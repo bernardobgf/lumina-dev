@@ -21,7 +21,7 @@ app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'lumina-api'
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/chats', requireAuth, chatRoutes);
-app.use('/api/v1/exercises', exerciseRoutes);
+app.use('/api/v1/exercises', requireAuth, exerciseRoutes);
 app.use(notFound);
 app.use(errorHandler);
 module.exports = app;

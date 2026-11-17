@@ -49,17 +49,17 @@ describe('API Lumina', () => {
   });
   test('executa CRUD de exercícios', async () => {
     const payload = { title: 'Equação do 2º grau', subject: 'Matemática', statement: 'Resolva x² - 5x + 6 = 0', answer: 'x = 2 ou x = 3' };
-    const created = await request(app).post('/api/v1/exercises').send(payload).expect(201);
+    const created = await request(app).post('/api/v1/exercises').set(auth()).send(payload).expect(201);
     const id = created.body.data._id;
-    await request(app).get('/api/v1/exercises').expect(200);
-    await request(app).get('/api/v1/exercises?subject=Matemática').expect(200);
-    await request(app).get(`/api/v1/exercises/${id}`).expect(200);
-    await request(app).put(`/api/v1/exercises/${id}`).send({ title: 'Equação revisada' }).expect(200);
-    await request(app).delete(`/api/v1/exercises/${id}`).expect(204);
+    await request(app).get('/api/v1/exercises').set(auth()).expect(200);
+    await request(app).get('/api/v1/exercises?subject=Matemática').set(auth()).expect(200);
+    await request(app).get(`/api/v1/exercises/${id}`).set(auth()).expect(200);
+    await request(app).put(`/api/v1/exercises/${id}`).set(auth()).send({ title: 'Equação revisada' }).expect(200);
+    await request(app).delete(`/api/v1/exercises/${id}`).set(auth()).expect(204);
   });
   test('trata identificador inválido e registro inexistente', async () => {
     await request(app).get('/api/v1/chats/id-invalido').set(auth()).expect(400);
-    await request(app).get('/api/v1/exercises/507f1f77bcf86cd799439011').expect(404);
+    await request(app).get('/api/v1/exercises/507f1f77bcf86cd799439011').set(auth()).expect(404);
   });
   test('retorna 404 para rota inexistente', async () => { await request(app).get('/rota-que-nao-existe').expect(404); });
 });
