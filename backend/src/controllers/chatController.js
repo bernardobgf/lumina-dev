@@ -1,7 +1,7 @@
 const service = require('../services/chatService');
 const asyncHandler = require('../middlewares/asyncHandler');
 const { generateAnswer } = require('../services/aiService');
-const owner = (req) => req.header('x-user-id') || 'demo-user';
+const owner = (req) => req.user.id;
 const chatController = {
   list: asyncHandler(async (req, res) => res.json({ data: await service.list(owner(req)) })),
   get: asyncHandler(async (req, res) => res.json({ data: await service.get(req.params.id, owner(req)) })),

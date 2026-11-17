@@ -2,6 +2,9 @@ function errorHandler(error, _req, res, _next) {
   if (error.name === 'ValidationError') {
     return res.status(400).json({ error: 'Dados inválidos.', details: error.message });
   }
+  if (error.code === 11000) {
+    return res.status(409).json({ error: 'Este e-mail já está cadastrado.' });
+  }
   if (error.name === 'CastError') {
     return res.status(400).json({ error: 'Identificador inválido.' });
   }
