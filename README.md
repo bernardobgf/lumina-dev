@@ -5,6 +5,7 @@ Monorepo com dois projetos independentes: `backend/` (API REST em Node.js/Expres
 ## Requisitos
 - Node.js 20+
 - MongoDB local ou MongoDB Atlas
+- Chave de API da Groq para habilitar as respostas do chat
 
 ## Backend
 ```bash
@@ -15,7 +16,7 @@ npm run dev
 ```
 API: http://localhost:3333 · Swagger: http://localhost:3333/api-docs · Health: http://localhost:3333/health
 
-Para respostas com IA no chat, configure `GEMINI_API_KEY` no `.env` do backend. A chave nunca deve ser colocada no frontend.
+Para respostas com IA no chat, configure `GROQ_API_KEY` e `GROQ_MODEL` no `.env` do backend. A integração usa o SDK oficial `groq-sdk`; a chave nunca deve ser colocada no frontend. Modelo padrão: `llama-3.3-70b-versatile`.
 
 ## Frontend
 Em outro terminal:
@@ -25,7 +26,7 @@ cp .env.example .env
 npm install
 npm run dev
 ```
-Frontend: http://localhost:5173
+Frontend: http://localhost:5173 (a primeira tela é a landing page; use “Acessar plataforma” para entrar no ambiente de estudos).
 
 ## Observações importantes
 - A persistência real é feita pela API/MongoDB. O frontend não usa localStorage como banco de dados.
