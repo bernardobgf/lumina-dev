@@ -27,11 +27,12 @@ export default function ChatPage({ onError, onSuccess }) {
       const userMessage = { role: 'user', content };
       const updated = await chatService.addMessage(chatId, userMessage);
       setMessages(updated.messages);
-      // Integração de IA fica desacoplada: o backend pode conectar Gemini/Groq sem alterar a interface.
-      const assistantMessage = { role: 'assistant', content: 'Recebi sua mensagem! A API está conectada e salvou sua pergunta. Para gerar respostas inteligentes, configure um provedor de IA no backend (por exemplo, Gemini) e conecte-o ao serviço de chat.' };
-      const withAnswer = await chatService.addMessage(chatId, assistantMessage);
+      const withAnswer = await chatService.ask(chatId, content);
       setMessages(withAnswer.messages); setChats((current) => current.map((chat) => chat._id === chatId ? withAnswer : chat));
-    } catch (error) { onError(error.message); }
+    } catch (error) {
+      if (chatId) { try { const saved = await chatService.get(chatId); setMessages(saved.messages || []); } catch { /* mantém a mensagem de erro original */ } }
+      onError(error.message);
+    }
     finally { setSending(false); }
   };
   return <div className="chat-layout"><SidebarChats chats={chats} activeId={activeId} onSelect={setActiveId} onCreate={createChat} onDelete={deleteChat}/><main className="chat-main"><div className="chat-heading"><div><span className="eyebrow">UM PASSO DE CADA VEZ</span><h1>{activeId ? chats.find((chat) => chat._id === activeId)?.title || 'Sua conversa' : 'Vamos aprender juntos?'}</h1><p>Seu espaço para perguntar, descobrir e evoluir.</p></div><div className="chat-status"><span className="online-dot"/> API {loading ? 'conectando' : 'conectada'}</div></div>

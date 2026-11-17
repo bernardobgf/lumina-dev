@@ -17,7 +17,8 @@ export const chatService = {
   get: async (id) => (await api.get(`/chats/${id}`)).data.data,
   rename: async (id, title) => (await api.put(`/chats/${id}`, { title })).data.data,
   remove: async (id) => api.delete(`/chats/${id}`),
-  addMessage: async (id, message) => (await api.post(`/chats/${id}/messages`, message)).data.data
+  addMessage: async (id, message) => (await api.post(`/chats/${id}/messages`, message)).data.data,
+  ask: async (id, content) => (await api.post(`/chats/${id}/ask`, { content })).data.data
 };
 export const exerciseService = {
   list: async () => (await api.get('/exercises')).data.data

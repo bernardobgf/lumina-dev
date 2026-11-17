@@ -5,4 +5,5 @@ const { createChatSchema, updateChatSchema, messageSchema } = require('../valida
 router.route('/').get(controller.list).post(validate(createChatSchema), controller.create);
 router.route('/:id').get(controller.get).put(validate(updateChatSchema), controller.update).delete(controller.remove);
 router.post('/:id/messages', validate(messageSchema), controller.addMessage);
+router.post('/:id/ask', validate(require('zod').z.object({ content: require('zod').z.string().trim().min(1).max(12000) })), controller.ask);
 module.exports = router;
